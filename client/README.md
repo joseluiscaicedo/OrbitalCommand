@@ -2,6 +2,10 @@
 
 A real-time space station resource management dashboard with cyberpunk aesthetics. Monitor critical resources like oxygen, water, food, and parts while managing resupply operations through an interactive control interface.
 
+## 🌐 Live Demo
+
+**See the app in real-time**: [https://orbital-command-app-f13c7305cc0d.herokuapp.com/](https://orbital-command-app-f13c7305cc0d.herokuapp.com/)
+
 ## ✨ Features
 
 - **Real-time Resource Monitoring**: Track oxygen, water, food, and parts levels with live updates
