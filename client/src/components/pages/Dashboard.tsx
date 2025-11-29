@@ -38,7 +38,32 @@ const Dashboard = () => {
       ]);
     });
 
-    newSocket.on("disconnect", () => setConnectionStatus("OFFLINE"));
+    newSocket.on("disconnect", () => {
+      setConnectionStatus("OFFLINE");
+      setLogs((p) => [
+        ...p,
+        {
+          id: generateLogId(),
+          timestamp: new Date().toLocaleTimeString(),
+          message: "Connection lost. Attempting to reconnect...",
+          type: "ALERT",
+        },
+      ]);
+    });
+
+    newSocket.on("connect_error", () => {
+      setConnectionStatus("OFFLINE");
+      setLogs((p) => [
+        ...p,
+        {
+          id: generateLogId(),
+          timestamp: new Date().toLocaleTimeString(),
+          message: "ERROR: Unable to establish connection to server.",
+          type: "ALERT",
+        },
+      ]);
+    });
+
     newSocket.on("resource_update", (data: ResourcesMap) => setResources({ ...data }));
     newSocket.on("log_update", (log: LogEntry) => setLogs((p) => [...p.slice(-49), log]));
 
