@@ -12,14 +12,6 @@ const app = express();
 const server = http.createServer(app);
 const io = new IOServer(server, { cors: { origin: "*" } });
 
-// Servir archivos estáticos de la build de React
-app.use(express.static(join(__dirname, "../client/dist")));
-
-// Ruta catch-all para React Router (debe ser después de las rutas de Socket.IO)
-app.get("/*", (req, res) => {
-  res.sendFile(join(__dirname, "../client/dist/index.html"));
-});
-
 const resources: ResourcesMap = {
   OXYGEN: { value: 85, criticalThreshold: 20, isResupplying: false, depletionRate: 0.8 },
   WATER: { value: 65, criticalThreshold: 25, isResupplying: false, depletionRate: 0.5 },
@@ -95,6 +87,12 @@ setInterval(() => {
   
   if (changed) io.emit("resource_update", resources);
 }, TICK);
+
+// Servir archivos estáticos del cliente y manejar React Router
+app.use(express.static(join(__dirname, "../client/dist")));
+app.use((req, res) => {
+  res.sendFile(join(__dirname, "../client/dist/index.html"));
+});
 
 const PORT = process.env.PORT || 4000;
 server.listen(PORT, () => console.log("Socket server listening on", PORT));
