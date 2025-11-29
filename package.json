@@ -1,0 +1,23 @@
+{
+  "name": "orbital-command",
+  "version": "1.0.0",
+  "description": "Real-time space station resource management dashboard",
+  "main": "server/server.ts",
+  "type": "module",
+  "engines": {
+    "node": "20.x"
+  },
+  "scripts": {
+    "start": "node --loader tsx server/server.ts",
+    "build": "cd client && npm install && npm run build",
+    "heroku-postbuild": "npm run build"
+  },
+  "keywords": ["socket.io", "react", "vite", "typescript"],
+  "author": "Erika - Perficient",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^5.1.0",
+    "socket.io": "^4.8.0",
+    "tsx": "^4.7.0"
+  }
+}
