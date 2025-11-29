@@ -1,11 +1,24 @@
 import http from "http";
 import express from "express";
 import { Server as IOServer } from "socket.io";
+import { fileURLToPath } from "url";
+import { dirname, join } from "path";
 import type { ResourcesMap, ResourceKey, LogEntry } from "../client/src/types.js";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
 
 const app = express();
 const server = http.createServer(app);
 const io = new IOServer(server, { cors: { origin: "*" } });
+
+// Servir archivos estáticos de la build de React
+app.use(express.static(join(__dirname, "../client/dist")));
+
+// Ruta catch-all para React Router
+app.get("*", (req, res) => {
+  res.sendFile(join(__dirname, "../client/dist/index.html"));
+});
 
 const resources: ResourcesMap = {
   OXYGEN: { value: 85, criticalThreshold: 20, isResupplying: false, depletionRate: 0.8 },
@@ -83,14 +96,5 @@ setInterval(() => {
   if (changed) io.emit("resource_update", resources);
 }, TICK);
 
-const PORT = 4000;
-server.listen(PORT)
-  .on("listening", () => console.log("Socket server listening on", PORT))
-  .on("error", (err: NodeJS.ErrnoException) => {
-    if (err.code === "EADDRINUSE") {
-      console.log(`Port ${PORT} is in use, trying ${PORT + 1}...`);
-      server.listen(PORT + 1, () => console.log("Socket server listening on", PORT + 1));
-    } else {
-      throw err;
-    }
-  });
+const PORT = process.env.PORT || 4000;
+server.listen(PORT, () => console.log("Socket server listening on", PORT));

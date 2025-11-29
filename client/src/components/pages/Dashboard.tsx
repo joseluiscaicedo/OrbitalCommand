@@ -22,7 +22,12 @@ const Dashboard = () => {
   };
 
   useEffect(() => {
-    const newSocket = io("http://localhost:4000");
+    // Detectar si estamos en producción o desarrollo
+    const socketUrl = import.meta.env.PROD 
+      ? window.location.origin 
+      : "http://localhost:4000";
+    
+    const newSocket = io(socketUrl);
     socketRef.current = newSocket;
 
     newSocket.on("connect", () => {
