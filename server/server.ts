@@ -15,8 +15,8 @@ const io = new IOServer(server, { cors: { origin: "*" } });
 // Servir archivos estáticos de la build de React
 app.use(express.static(join(__dirname, "../client/dist")));
 
-// Ruta catch-all para React Router
-app.get("*", (req, res) => {
+// Ruta catch-all para React Router (debe ser después de las rutas de Socket.IO)
+app.get("/*", (req, res) => {
   res.sendFile(join(__dirname, "../client/dist/index.html"));
 });
 
