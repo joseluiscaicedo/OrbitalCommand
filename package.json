@@ -13,7 +13,7 @@
     "heroku-postbuild": "npm run build"
   },
   "keywords": ["socket.io", "react", "vite", "typescript"],
-  "author": "Erika - Perficient",
+  "author": "jose caicedo",
   "license": "ISC",
   "dependencies": {
     "express": "^5.1.0",
